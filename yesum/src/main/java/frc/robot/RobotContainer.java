@@ -10,9 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.BucketCommand;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.LiftCommand;
+import frc.robot.commands.*;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -33,10 +31,11 @@ public class RobotContainer {
   private CompressorSubsystem compressorSubsystem;
   private BucketSubsystem bucketSubsystem;
   private DriveCommand driveCommand;
+  private DriveAutoCommand driveAutoCommand;
   private LiftCommand liftCommandUp;
   private LiftCommand liftCommandDown;
-  private BucketCommand bucketCommandIn;
-  private BucketCommand bucketCommandOut;
+  private BucketInCommand bucketCommandIn;
+  private BucketOutCommand bucketCommandOut;
   public XboxController controller = new XboxController(0);
 
 
@@ -49,9 +48,10 @@ public class RobotContainer {
     this.driveSubsystem = new DriveSubsystem();
     this.liftSubsystem = new LiftSubsystem();
     this.bucketSubsystem = new BucketSubsystem();
+    this.bucketCommandIn = new BucketInCommand(bucketSubsystem);
+    this.bucketCommandOut = new BucketOutCommand(bucketSubsystem);
+    this.driveAutoCommand = new DriveAutoCommand(this.driveSubsystem);
     this.driveCommand = new DriveCommand(this.controller,this.driveSubsystem);
-    this.bucketCommandIn = new BucketCommand(this.bucketSubsystem,0);
-    this.bucketCommandOut = new BucketCommand(this.bucketSubsystem,1);
     this.liftCommandUp = new LiftCommand(this.liftSubsystem,1);
     this.liftCommandDown = new LiftCommand(this.liftSubsystem,2);
     this.driveSubsystem.setDefaultCommand(this.driveCommand);
@@ -73,8 +73,11 @@ public class RobotContainer {
     aButton.whenPressed(this.bucketCommandIn);
     JoystickButton xButton = new JoystickButton(controller,XboxController.Button.kX.value);
     xButton.whenPressed(this.bucketCommandOut);
-  }
 
+  }
+    public void driveSetUp(){
+      this.driveAutoCommand.schedule();
+    }
 
 
 }

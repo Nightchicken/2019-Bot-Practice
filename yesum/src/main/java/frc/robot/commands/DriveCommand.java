@@ -18,8 +18,8 @@ public class DriveCommand extends CommandBase {
 
     }
     public void execute(){
-        this.drive.setLeftMotors(this.controller.getY(GenericHID.Hand.kLeft));
-        this.drive.setRightMotors(this.controller.getY(GenericHID.Hand.kRight));
+        this.drive.setLeftMotors(-this.controller.getY(GenericHID.Hand.kLeft));
+        this.drive.setRightMotors(-this.controller.getY(GenericHID.Hand.kRight));
     }
     public void end(boolean interrupted){
 
